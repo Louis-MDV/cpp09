@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <algorithm>
+#include <iostream>
 #include "../Colors.hpp"
 
 // void fillVec(std::stack<std::string> *stack, std::vector<int> *vec);

@@ -5,16 +5,13 @@ std::map<std::string, float> dbMapCreation() {
 
     std::map<std::string, float>    db;
     std::ifstream   inputfile("data.csv");
-    if (!inputfile) {
-        std::cerr << "Error: Could not open data.csv" << std::endl;
-        return db;
-    }
+
     std::string line;
     getline(inputfile, line); //skip first line
     while (getline(inputfile, line)) {
 
         std::string date = line.substr(0, 10);
-        float tradeRate = std::stof(line.substr(11));
+        float tradeRate = static_cast<float>(atof(line.substr(11).c_str()));
         db.insert(std::make_pair(date, tradeRate));
     }
     inputfile.close();
@@ -31,7 +28,7 @@ float getTradeRate(std::string date, std::map<std::string, float> db) {
         for (it = db.begin(); it != db.end(); ++it) {
             if (it->first == date)
                 return (it->second);
-            else if (it->first > date) { 
+            else if (it->first > date && it != db.begin()) { 
                 --it;
                 return (it->second);
             }
@@ -63,11 +60,6 @@ int checkFormat(std::string line) {
             return 1;
     }
     if (line.compare(10, 3, " | ") != 0)
-        return 1;
-
-    //3. check value format 0-100 or float
-    float stockNum = atof(line.substr(line.find('|') + 2).c_str());    
-    if (stockNum == 0)
         return 1;
 
     return 0;

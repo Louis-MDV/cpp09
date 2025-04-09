@@ -4,11 +4,22 @@ int main (int ac, char **av) {
 
     (void) ac;
     try {
-        std::ifstream   ifile(av[1]);
 
+        std::ifstream   ifile(av[1]);
         if (ac != 2 || !ifile.is_open())
-            throw "could not open file.";
+            throw "could not open file.\n";
+        if (ifile.peek() == std::ifstream::traits_type::eof())
+            throw "input file is empty.\n";
+
+
+        std::ifstream   inputfile("data.csv");
+        if (!inputfile) {
+            throw "Could not open data.csv\n";
+        }
         std::map<std::string, float> db = dbMapCreation();
+        if (db.empty())
+            throw "db empty!\n";
+            
         std::string     line;
         getline(ifile, line); // skip head
 
@@ -18,12 +29,17 @@ int main (int ac, char **av) {
                 std::cout << "Error: bad input => " << line << std::endl;
                 continue;
             }
-            float stockNum = atof(line.substr(line.find('|') + 2).c_str());
+            //3. check value format 0-100 or float
+            float stockNum = atof(line.substr(line.find('|') + 2).c_str());    
+            if (stockNum == 0) {
+                std::cout << "Error: 0 not accepted.\n";
+                continue;
+            }
             if (stockNum < 0) {
                 std::cout << "Error: not a positive number.\n";
                 continue;
             }
-            if (stockNum > 100) {
+            if (stockNum > 1000) {
                 std::cout << "Error: too large a number.\n";
                 continue;
             }

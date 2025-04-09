@@ -10,9 +10,12 @@ int main(int ac, char **av) {
         
         std::vector<int> vec;
         std::deque<int> dq;
-        std::istringstream iss(av[1]);
-        int num;
-        while (iss >> num) {
+        for (int i = 1; i < ac; ++i) {
+            std::istringstream iss(av[i]);
+            int num;
+            if (!(iss >> num)) {
+                throw "Invalid input: must be integers.\n";
+            }
             if (num >= 0) {
                 vec.push_back(num);
                 dq.push_back(num);
