@@ -8,8 +8,16 @@ void createParsedStack(std::stack<std::string>* stack, std::string input) {
 
     int i = 0;
     int len = input.size()-1;
-    while (i < len && input[i] ) {
-        if (isdigit(input[i]) && isdigit(input[i+2]) && isign(input[i+4])) {
+    while (i < len && input[i]) {
+        if (i > 0 && isdigit(input[i]) && isdigit(input[i+2]) && isign(input[i+4]) && isign(input[i+6])) {
+            if (i+6 < len && isdigit(input[i+6]))
+                i+=6;
+            else
+                i+=7;
+        }
+        else if (isdigit(input[i]) && isdigit(input[i+2])
+            && isign(input[i+4])) {
+
             if (i+6 < len && !isign(input[i+6]))
                 i+=6;
             else 
@@ -17,12 +25,15 @@ void createParsedStack(std::stack<std::string>* stack, std::string input) {
         }
         else if (isdigit(input[i]) && isdigit(input[i+2]) && isdigit(input[i+4])
             && isign(input[i+6]) && isign(input[i+8])) {
+
             if (i+10 < len && !isign(input[i+10]))
                 i+=10;
             else
                 i+=9;
         }
-        else if (isdigit(input[i]) && isign(input[i+2])) {
+        else if (isdigit(input[i])
+            && isign(input[i+2])) {
+
             if (i+4 < len && isdigit(input[i+4]))
                 i+=4;
             else
@@ -31,11 +42,17 @@ void createParsedStack(std::stack<std::string>* stack, std::string input) {
         else
             throw 1;
     }
+
     int y = input.size() - 1;
-    while(y >= 0) {
-        std::cout << input[y] <<std::endl;
-        stack->push(std::string(1, input[y]));
-        y-=2;
+
+    while (y >= 0) {
+        if (y >= 0) {
+            // std::cout << input[y] <<std::endl;
+            stack->push(std::string(1, input[y]));
+        }
+        if (y <= 0)
+            return;
+        y -= 1;
     }
 }
 
