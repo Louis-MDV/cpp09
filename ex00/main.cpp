@@ -45,6 +45,7 @@ int main (int ac, char **av) {
             }
             std::string date = line.substr(0, line.find('|') - 1);
             float tradeRate = getTradeRate(date, db);
+            // std::cout << tradeRate << std::endl;
             float bondValue = stockNum * tradeRate;
             std::cout << date << " => " << stockNum /* << " * " << tradeRate */ << " = " << bondValue << std::endl;
         }

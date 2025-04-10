@@ -26,8 +26,12 @@ float getTradeRate(std::string date, std::map<std::string, float> db) {
         if (db.empty())
             throw "db empty!";
         for (it = db.begin(); it != db.end(); ++it) {
-            if (it->first == date)
+            if (it->first == date) {
                 return (it->second);
+            }
+            if (it->first < date && it == --db.end()) {
+                return it->second;
+            }
             else if (it->first > date && it != db.begin()) { 
                 --it;
                 return (it->second);
