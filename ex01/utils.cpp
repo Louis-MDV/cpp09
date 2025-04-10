@@ -47,7 +47,7 @@ void createParsedStack(std::stack<std::string>* stack, std::string input) {
                 // std::cout << input[i] << std::endl;
             }
         }
-        else if (isdigit(input[i]) && isign(input[i+2])) {
+        else if (i > 0 && isdigit(input[i]) && isign(input[i+2])) {
             // std::cout << "d s :" << i << "\n";
 
             if (i+4 < len && isdigit(input[i+4])) {
@@ -86,30 +86,36 @@ void adjustAll(std::stringstream *ss, std::stack<std::string> *strStack, int rem
     ss->clear(); // Clear the state flags
 }
 
-// Cut nums from stack to stack
 void fillIntStack(std::stack<std::string> *strStack, std::stack<int> *intStack) {
     // Temporary stack to reverse the order
     std::stack<int> tmpStack;
 
-    // Cutting 2 top digits from inputStack to tempStack
+    // Cutting 2 top digits from inputStack to tmpStack
+    if (strStack->size() < 2) {
+        std::cerr << "Error: not enough operands on the stack!" << std::endl;
+        return;
+    }
+    
+    // Safely push two elements from strStack to tmpStack
     for (int i = 0; i < 2; ++i) {
-        tmpStack.push(atoi(strStack->top().c_str()));
-        strStack->pop(); // Remove copied digits from inputStack
+        if (!strStack->empty()) {
+            tmpStack.push(atoi(strStack->top().c_str()));  // Convert to int and push to tmpStack
+            strStack->pop(); // Remove copied element from strStack
+        } else {
+            std::cerr << "Error: not enough operands on the stack!" << std::endl;
+            return; // Exit if there are not enough elements
+        }
     }
 
-    // Check if inputStack's next element is a sign, if not cut to tempStack
+    // Check if inputStack's next element is a sign or number
     if (!strStack->empty() && !strStack->top().empty() && isdigit((strStack->top())[0])) {
         tmpStack.push(atoi(strStack->top().c_str()));
         strStack->pop();
     }
 
-    // Transfer elements from tempStack to outputStack to maintain the original order
+    // Transfer elements from tmpStack to intStack to maintain the original order
     while (!tmpStack.empty()) {
         intStack->push(tmpStack.top());
         tmpStack.pop();
     }
-    // while (!intStack->empty()) {
-    //     std::cout << intStack->top() << std::endl;
-    //     intStack->pop();
-    // }
 }

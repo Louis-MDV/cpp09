@@ -23,6 +23,11 @@ int calculation(std::stack<std::string> *strStack) {
             int num2 = intStack.top(); intStack.pop();
             // std::cout << " num2 (" << num2 << ") = ";
 
+            // If the operator is invalid or there's an issue with the stack
+            if (strStack->top().empty() || strStack->top()[0] == 0) {
+                std::cout << "Error: Invalid operator" << std::endl;
+                return 0;
+            }
             switch (strStack->top()[0]) {
                 case '-':
                     ss << num1 - num2;
@@ -47,6 +52,11 @@ int calculation(std::stack<std::string> *strStack) {
             // std::cout << strStack->top()[0];
             // std::cout << " num0 (" << num1 << ") = ";
 
+            // If the operator is invalid or there's an issue with the stack
+            if (strStack->top().empty() || strStack->top()[0] == 0) {
+                std::cout << "Error: Invalid operator" << std::endl;
+                return 0;
+            }
             switch (strStack->top()[0]) {
                 case '-':
                     ss << num0 - num1;
